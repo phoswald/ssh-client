@@ -20,6 +20,33 @@ public class SshSession implements AutoCloseable {
         this.session = session;
     }
 
+    public static SshSession createSession(String url) {
+        String host;
+        String user;
+        String password = null;
+        int port = 22;
+        if(url.contains("@")) {
+            host = url.substring(url.indexOf('@') + 1);
+            user = url.substring(0, url.indexOf('@'));
+            if(user.contains(":")) {
+                password = user.substring(user.indexOf(':') + 1);
+                user = user.substring(0, user.indexOf(':'));
+            }
+        } else {
+            host = url;
+            user = System.getProperty("user.name");
+        }
+        if(host.contains(":")) {
+            port = Integer.parseInt(host.substring(host.indexOf(':') + 1));
+            host = host.substring(0, host.indexOf(':'));
+        }
+        if(password == null) {
+            return createRsaSession(host, port, user);
+        } else {
+            return createPasswordSession(host, port, user, password);
+        }
+    }
+
     public static SshSession createRsaSession(String host, int port, String user) {
         Path home = Paths.get(System.getProperty("user.home"));
         return createRsaSession(host, port, user, home.resolve(".ssh/id_rsa"));
