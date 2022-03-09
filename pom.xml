@@ -13,9 +13,8 @@
 
   <artifactId>ssh-client</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
 
-  <name>SSH Client</name>
+  <name>${project.artifactId}</name>
   <description>A wrapper around JSch, a pure Java implementation of SSH2</description>
   <url>https://github.com/phoswald/ssh-client</url>
 
